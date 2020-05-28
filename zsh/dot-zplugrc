@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+source ~/.zplug/init.zsh
+
+zplug "zsh-users/zsh-history-substring-search"
+
+zplug load
+
