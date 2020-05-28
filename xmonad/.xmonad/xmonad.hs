@@ -9,6 +9,7 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.EZConfig
 import XMonad.Layout ((|||))
+import XMonad.Layout.NoBorders (smartBorders, SmartBorder)
 import qualified XMonad.Layout.Spacing as Gaps
 import qualified XMonad.Layout as L
 
@@ -16,8 +17,10 @@ import Graphics.X11.Types
 import Graphics.X11.ExtraTypes.XF86
 
 type LBoth = L.Choose
-type TallGaps = ModifiedLayout Gaps.Spacing L.Tall
-type MyLayout = LBoth TallGaps (LBoth (L.Mirror TallGaps) L.Full)
+type SmartTall = ModifiedLayout SmartBorder L.Tall
+type SmartFull = ModifiedLayout SmartBorder L.Full
+type TallGaps = ModifiedLayout Gaps.Spacing SmartTall
+type MyLayout = LBoth TallGaps (LBoth (L.Mirror TallGaps) SmartFull)
 
 -- The Default modifier
 dMod :: KeyMask
@@ -48,7 +51,7 @@ toggleMyBar XConfig { modMask = defMask } = (defMask, xK_b)
 myStartupHook :: X ()
 myStartupHook = do
   spawn "dunst"
-  spawn "picom --experimental-backends"
+  spawn "picom"
   spawn "feh ~/Imagens/wallpapers/ --bg-fill --randomize"
 
 myWindowGaps :: Gaps.Border
@@ -58,18 +61,20 @@ myWindowGaps = Gaps.Border { Gaps.top = size
                            , Gaps.right = size }
   where size = 10
 
-myScreenGaps :: Gaps.Border
-myScreenGaps = Gaps.Border { Gaps.top = size
-                           , Gaps.bottom = size
-                           , Gaps.left = size
-                           , Gaps.right = size }
-  where size = 5
+-- myScreenGaps :: Gaps.Border
+-- myScreenGaps = Gaps.Border { Gaps.top = size
+--                            , Gaps.bottom = size
+--                            , Gaps.left = size
+--                            , Gaps.right = size }
+--   where size = 5
 
 myLayouts :: MyLayout a
-myLayouts = tiled ||| L.Mirror tiled ||| L.Full
+myLayouts = tiled ||| L.Mirror tiled ||| smartBorders L.Full
   where
-    -- default tiling algorithm partitions the screen into two panes
-    tiled   = Gaps.spacingRaw True myScreenGaps True myWindowGaps True (L.Tall nmaster delta ratio)
+    vanillaTall = L.Tall nmaster delta ratio
+    smartTall = smartBorders vanillaTall
+    -- Smart tiling?, screeng gap, use screen gap?, window gap, use window gap?
+    tiled = Gaps.spacingRaw True myWindowGaps True myWindowGaps True smartTall
     -- The default number of windows in the master pane
     nmaster = 1
     -- Default proportion of screen occupied by master pane
@@ -90,6 +95,7 @@ myConfig = def
   , startupHook = myStartupHook
   , terminal = "alacritty"
   , layoutHook = myLayouts
+  , focusedBorderColor = "#7851a9"
   -- more changes
   }
 

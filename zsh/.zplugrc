@@ -3,6 +3,9 @@
 source ~/.zplug/init.zsh
 
 zplug "zsh-users/zsh-history-substring-search"
+zplug "plugins/git", from:oh-my-zsh
+# zplug "tylerreckart/Odin", as:theme
+zplug 'dracula/zsh', as:theme
 
 zplug load
 

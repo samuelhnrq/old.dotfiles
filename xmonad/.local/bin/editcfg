@@ -1,0 +1,17 @@
+#!/bin/bash
+
+listCfgFiles() {
+    cd ~/dotfiles
+    find . -mindepth 2 \
+        -not -wholename '*.git*' \
+        -type f -exec grep -Iq . {} \; -print
+    cd -
+}
+
+launchDmenu() {
+    target="$(listCfgFiles | dmenu)"
+    [ $target ] && $EDITOR $target
+}
+
+launchDmenu
+
