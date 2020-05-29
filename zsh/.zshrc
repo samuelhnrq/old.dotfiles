@@ -19,11 +19,18 @@ setopt auto_pushd
 bindkey -e
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
-# Editor
-EDITOR=vim
-VISUAL=$EDITOR
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[[1;5C' vi-forward-word
+bindkey '^[[1;5D' vi-backward-word
 
 # Aliases
 alias vim=nvim
+
+# functions
+mkdcd() {
+    mkdir -p $1
+    cd $1
+}
 

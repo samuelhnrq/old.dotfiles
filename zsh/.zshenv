@@ -1,2 +1,4 @@
-path=($HOME/.local/bin $path)
+path=($HOME/.local/bin $HOME/.cabal/bin $path)
+export EDITOR=nvim
+export VISUAL=$EDITOR
 
