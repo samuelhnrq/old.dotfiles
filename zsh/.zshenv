@@ -1,4 +1,4 @@
-path=($HOME/.local/bin $HOME/.cabal/bin $path)
+path=($HOME/.local/bin $HOME/go/bin $HOME/.cabal/bin $HOME/.yarn/bin $path)
 export EDITOR=nvim
 export VISUAL=$EDITOR
 
