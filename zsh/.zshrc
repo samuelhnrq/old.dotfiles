@@ -5,13 +5,19 @@ else
     echo "WARNING ZPLUG NOT FOUND!!!"
 fi
 
+[[ $- != *i* ]] && return 0
+
 ZSH_THEME="dracula"
 
 # Sane defaults, yes ZSH I would like command history.
 HISTFILE=~/.zhistory
 SAVEHIST=3000
+HISTSIZE=500
 setopt share_history
-setopt inc_append_history HIST_IGNORE_DUPS HIST_SAVE_NO_DUPS
+setopt appendhistory
+setopt inc_append_history
+setopt HIST_IGNORE_DUPS
+setopt HIST_SAVE_NO_DUPS
 setopt extended_glob
 setopt auto_pushd
 
@@ -26,11 +32,15 @@ bindkey '^[[1;5C' vi-forward-word
 bindkey '^[[1;5D' vi-backward-word
 
 # Aliases
-alias vim=nvim
+# 1alias vim=nvim
+alias npm="PREFIX=~/.local npm"
+alias npx="PREFIX=~/.local npx"
 
 # functions
 mkdcd() {
     mkdir -p $1
     cd $1
 }
+
+eval "$(rbenv init -)"
 
